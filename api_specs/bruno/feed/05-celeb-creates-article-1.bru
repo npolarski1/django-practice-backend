@@ -1,0 +1,33 @@
+meta {
+  name: Celeb creates article 1
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/api/articles
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{celeb_token}}
+}
+
+body:json {
+  {
+    "article": {
+      "title": "Feed Article 1 {{uid}}",
+      "description": "Feed test 1",
+      "body": "Feed body 1"
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("slug1", res.body.article.slug);
+}

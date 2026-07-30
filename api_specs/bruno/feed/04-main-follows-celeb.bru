@@ -1,0 +1,23 @@
+meta {
+  name: Main follows celeb
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api/profiles/feedc_{{uid}}/follow
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{main_token}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.profile.following).to.eql(true);
+}

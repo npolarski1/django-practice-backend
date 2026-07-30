@@ -1,0 +1,23 @@
+meta {
+  name: Verify null bio persisted
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{host}}/api/user
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.user.bio).to.be.null;
+}

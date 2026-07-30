@@ -1,0 +1,27 @@
+meta {
+  name: PUT /user no auth
+  type: http
+  seq: 11
+}
+
+put {
+  url: {{host}}/api/user
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user": {
+      "bio": "test"
+    }
+  }
+}
+
+assert {
+  res.status: eq 401
+}
+
+script:post-response {
+  expect(res.body.errors.token[0]).to.eql("is missing");
+}

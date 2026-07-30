@@ -1,0 +1,49 @@
+meta {
+  name: Create article with tags
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/articles
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "article": {
+      "title": "Test Article {{uid}}",
+      "description": "Test description",
+      "body": "Test body content",
+      "tagList": ["d_{{uid}}", "t_{{uid}}"]
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("slug", res.body.article.slug);
+  bru.setVar("created_at", res.body.article.createdAt);
+  bru.setVar("updated_at", res.body.article.updatedAt);
+  expect(res.body.article.title).to.eql("Test Article " + bru.getVar("uid"));
+  expect(typeof res.body.article.slug).to.eql("string");
+  expect(res.body.article.description).to.eql("Test description");
+  expect(res.body.article.body).to.eql("Test body content");
+  expect(res.body.article.tagList).to.include("d_" + bru.getVar("uid"));
+  expect(res.body.article.tagList).to.include("t_" + bru.getVar("uid"));
+  expect(res.body.article.tagList[0]).to.eql("d_" + bru.getVar("uid"));
+  expect(res.body.article.tagList[1]).to.eql("t_" + bru.getVar("uid"));
+  expect(res.body.article.createdAt).to.match(/^\d{4}-\d{2}-\d{2}T/);
+  expect(res.body.article.updatedAt).to.match(/^\d{4}-\d{2}-\d{2}T/);
+  expect(res.body.article.favorited).to.eql(false);
+  expect(res.body.article.favoritesCount).to.eql(0);
+  expect(res.body.article.author.username).to.eql("art_" + bru.getVar("uid"));
+}

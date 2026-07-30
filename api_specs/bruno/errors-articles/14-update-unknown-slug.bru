@@ -1,0 +1,31 @@
+meta {
+  name: Update unknown slug
+  type: http
+  seq: 14
+}
+
+put {
+  url: {{host}}/api/articles/unknown-slug-{{uid}}
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "article": {
+      "body": "test"
+    }
+  }
+}
+
+assert {
+  res.status: eq 404
+}
+
+script:post-response {
+  expect(res.body.errors.article[0]).to.eql("not found");
+}

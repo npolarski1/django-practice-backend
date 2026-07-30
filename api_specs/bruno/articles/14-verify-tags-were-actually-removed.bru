@@ -1,0 +1,20 @@
+meta {
+  name: Verify tags were actually removed
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{host}}/api/articles/{{slug}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(Array.isArray(res.body.article.tagList)).to.eql(true);
+  expect(res.body.article.tagList.length).to.eql(0);
+}

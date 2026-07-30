@@ -1,0 +1,19 @@
+meta {
+  name: Unfollow no auth
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{host}}/api/profiles/unknown-user-{{uid}}/follow
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 401
+}
+
+script:post-response {
+  expect(res.body.errors.token[0]).to.eql("is missing");
+}

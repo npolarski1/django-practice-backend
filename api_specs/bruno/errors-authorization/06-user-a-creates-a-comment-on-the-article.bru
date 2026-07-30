@@ -1,0 +1,31 @@
+meta {
+  name: User A creates a comment on the article
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/api/articles/{{slug}}/comments
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token_a}}
+}
+
+body:json {
+  {
+    "comment": {
+      "body": "A's comment"
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("comment_id", res.body.comment.id);
+}

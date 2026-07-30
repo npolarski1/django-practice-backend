@@ -1,0 +1,29 @@
+meta {
+  name: Setup: Register for authenticated 404 tests
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user": {
+      "username": "ep_{{uid}}",
+      "email": "ep_{{uid}}@test.com",
+      "password": "password123"
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("token", res.body.user.token);
+}

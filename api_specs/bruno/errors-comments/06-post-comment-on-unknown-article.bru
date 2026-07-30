@@ -1,0 +1,31 @@
+meta {
+  name: Post comment on unknown article
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/api/articles/unknown-slug-{{uid}}/comments
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "comment": {
+      "body": "orphan"
+    }
+  }
+}
+
+assert {
+  res.status: eq 404
+}
+
+script:post-response {
+  expect(res.body.errors.article[0]).to.eql("not found");
+}

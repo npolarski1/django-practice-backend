@@ -1,0 +1,27 @@
+meta {
+  name: POST comments
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{host}}/api/articles/{{slug}}/comments
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "comment": {
+      "body": "Second comment"
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}

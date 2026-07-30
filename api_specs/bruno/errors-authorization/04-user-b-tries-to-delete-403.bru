@@ -1,0 +1,23 @@
+meta {
+  name: User B tries to delete -> 403
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{host}}/api/articles/{{slug}}
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token_b}}
+}
+
+assert {
+  res.status: eq 403
+}
+
+script:post-response {
+  expect(res.body.errors.article[0]).to.eql("forbidden");
+}

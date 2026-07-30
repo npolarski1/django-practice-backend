@@ -1,0 +1,19 @@
+meta {
+  name: GET /user no auth
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{host}}/api/user
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 401
+}
+
+script:post-response {
+  expect(res.body.errors.token[0]).to.eql("is missing");
+}

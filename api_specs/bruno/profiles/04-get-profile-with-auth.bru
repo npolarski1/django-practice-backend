@@ -1,0 +1,26 @@
+meta {
+  name: Get profile with auth
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/profiles/celeb_{{uid}}
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.profile.username).to.eql("celeb_" + bru.getVar("uid"));
+  expect(res.body.profile.bio).to.be.null;
+  expect(res.body.profile.image).to.be.null;
+  expect(res.body.profile.following).to.eql(false);
+}

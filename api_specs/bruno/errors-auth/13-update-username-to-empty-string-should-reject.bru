@@ -1,0 +1,27 @@
+meta {
+  name: Update username to empty string - should reject
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{host}}/api/user
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "user": {
+      "username": ""
+    }
+  }
+}
+
+assert {
+  res.status: eq 422
+}

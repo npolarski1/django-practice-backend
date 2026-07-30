@@ -1,0 +1,24 @@
+meta {
+  name: Feed with limit=1&offset=1
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{host}}/api/articles/feed?limit=1&offset=1
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{main_token}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.articles.length).to.eql(1);
+  expect(res.body.articlesCount).to.eql(2);
+}

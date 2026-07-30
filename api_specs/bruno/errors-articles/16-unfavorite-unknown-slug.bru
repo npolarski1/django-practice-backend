@@ -1,0 +1,23 @@
+meta {
+  name: Unfavorite unknown slug
+  type: http
+  seq: 16
+}
+
+delete {
+  url: {{host}}/api/articles/unknown-slug-{{uid}}/favorite
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+assert {
+  res.status: eq 404
+}
+
+script:post-response {
+  expect(res.body.errors.article[0]).to.eql("not found");
+}

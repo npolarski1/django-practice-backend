@@ -1,0 +1,35 @@
+meta {
+  name: Create article 2
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/articles
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "article": {
+      "title": "Pagination 2 {{uid}}",
+      "description": "Page test 2",
+      "body": "Page body 2"
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("slug2", res.body.article.slug);
+  expect(res.body.article.title).to.eql("Pagination 2 " + bru.getVar("uid"));
+  expect(typeof res.body.article.slug).to.eql("string");
+}

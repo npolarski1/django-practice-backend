@@ -1,0 +1,32 @@
+meta {
+  name: Verify favorite persists
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/articles/{{slug}}
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(typeof res.body.article.title).to.eql("string");
+  expect(typeof res.body.article.slug).to.eql("string");
+  expect(typeof res.body.article.description).to.eql("string");
+  expect(typeof res.body.article.body).to.eql("string");
+  expect(Array.isArray(res.body.article.tagList)).to.eql(true);
+  expect(res.body.article.createdAt).to.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  expect(res.body.article.updatedAt).to.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  expect(res.body.article.favorited).to.eql(true);
+  expect(res.body.article.favoritesCount).to.eql(1);
+  expect(res.body.article.author.username).to.eql("fav_" + bru.getVar("uid"));
+}

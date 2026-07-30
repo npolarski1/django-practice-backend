@@ -1,0 +1,29 @@
+meta {
+  name: Register duplicate username
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/api/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user": {
+      "username": "ea_dup_{{uid}}",
+      "email": "ea_dup2_{{uid}}@test.com",
+      "password": "password123"
+    }
+  }
+}
+
+assert {
+  res.status: eq 409
+}
+
+script:post-response {
+  expect(res.body.errors.username[0]).to.eql("has already been taken");
+}

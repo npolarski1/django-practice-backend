@@ -1,0 +1,33 @@
+meta {
+  name: Duplicate titles are allowed (each gets a unique slug)
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{host}}/api/articles
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "article": {
+      "title": "Dup Title {{uid}}",
+      "description": "first",
+      "body": "first"
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("slug1", res.body.article.slug);
+}

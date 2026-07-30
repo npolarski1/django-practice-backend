@@ -1,0 +1,23 @@
+meta {
+  name: Delete unknown slug
+  type: http
+  seq: 18
+}
+
+delete {
+  url: {{host}}/api/articles/unknown-slug-{{uid}}
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+assert {
+  res.status: eq 404
+}
+
+script:post-response {
+  expect(res.body.errors.article[0]).to.eql("not found");
+}

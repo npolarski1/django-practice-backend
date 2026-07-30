@@ -1,0 +1,31 @@
+meta {
+  name: PUT user
+  type: http
+  seq: 17
+}
+
+put {
+  url: {{host}}/api/user
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "user": {
+      "image": null
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.user.image).to.be.null;
+}

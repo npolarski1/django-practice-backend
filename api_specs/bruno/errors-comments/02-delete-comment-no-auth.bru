@@ -1,0 +1,19 @@
+meta {
+  name: Delete comment no auth
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{host}}/api/articles/some-slug/comments/1
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 401
+}
+
+script:post-response {
+  expect(res.body.errors.token[0]).to.eql("is missing");
+}

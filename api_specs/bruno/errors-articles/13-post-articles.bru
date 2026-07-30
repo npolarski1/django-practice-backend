@@ -1,0 +1,34 @@
+meta {
+  name: POST articles
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{host}}/api/articles
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "article": {
+      "title": "Dup Title {{uid}}",
+      "description": "second",
+      "body": "second"
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("slug2", res.body.article.slug);
+  expect(res.body.article.slug).to.not.eql(bru.getVar("slug1"));
+}

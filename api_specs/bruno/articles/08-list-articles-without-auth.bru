@@ -1,0 +1,20 @@
+meta {
+  name: List articles without auth
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{host}}/api/articles
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(Array.isArray(res.body.articles)).to.eql(true);
+  expect(Number.isInteger(res.body.articlesCount)).to.eql(true);
+}

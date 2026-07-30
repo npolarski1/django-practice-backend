@@ -1,0 +1,19 @@
+meta {
+  name: Delete the first comment
+  type: http
+  seq: 11
+}
+
+delete {
+  url: {{host}}/api/articles/{{slug}}/comments/{{first_comment_id}}
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+assert {
+  res.status: eq 204
+}

@@ -1,0 +1,28 @@
+meta {
+  name: Login empty email
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/api/users/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user": {
+      "email": "",
+      "password": "password123"
+    }
+  }
+}
+
+assert {
+  res.status: eq 422
+}
+
+script:post-response {
+  expect(res.body.errors.email[0]).to.eql("can't be blank");
+}

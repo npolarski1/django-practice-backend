@@ -1,0 +1,43 @@
+meta {
+  name: Update article body
+  type: http
+  seq: 10
+}
+
+put {
+  url: {{host}}/api/articles/{{slug}}
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "article": {
+      "body": "Updated body content"
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.article.title).to.eql("Test Article " + bru.getVar("uid"));
+  expect(res.body.article.slug).to.eql(bru.getVar("slug"));
+  expect(res.body.article.description).to.eql("Test description");
+  expect(res.body.article.body).to.eql("Updated body content");
+  expect(Array.isArray(res.body.article.tagList)).to.eql(true);
+  expect(res.body.article.tagList.length).to.eql(2);
+  expect(res.body.article.tagList).to.include("d_" + bru.getVar("uid"));
+  expect(res.body.article.tagList).to.include("t_" + bru.getVar("uid"));
+  expect(res.body.article.createdAt).to.eql(bru.getVar("created_at"));
+  expect(res.body.article.updatedAt).to.not.eql(bru.getVar("updated_at"));
+  expect(typeof res.body.article.favorited).to.eql("boolean");
+  expect(Number.isInteger(res.body.article.favoritesCount)).to.eql(true);
+  expect(res.body.article.author.username).to.eql("art_" + bru.getVar("uid"));
+}

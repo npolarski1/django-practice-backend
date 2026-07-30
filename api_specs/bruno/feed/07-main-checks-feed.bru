@@ -1,0 +1,36 @@
+meta {
+  name: Main checks feed
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{host}}/api/articles/feed
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{main_token}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(Array.isArray(res.body.articles)).to.eql(true);
+  expect(Number.isInteger(res.body.articlesCount)).to.eql(true);
+  expect(res.body.articlesCount).to.eql(2);
+  expect(res.body.articles.length).to.eql(2);
+  expect(typeof res.body.articles[0].title).to.eql("string");
+  expect(typeof res.body.articles[0].slug).to.eql("string");
+  expect(typeof res.body.articles[0].description).to.eql("string");
+  expect(res.body.articles[0]).to.not.have.property("body");
+  expect(Array.isArray(res.body.articles[0].tagList)).to.eql(true);
+  expect(res.body.articles[0].createdAt).to.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  expect(res.body.articles[0].updatedAt).to.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  expect(typeof res.body.articles[0].favorited).to.eql("boolean");
+  expect(Number.isInteger(res.body.articles[0].favoritesCount)).to.eql(true);
+  expect(res.body.articles[0].author.username).to.eql("feedc_" + bru.getVar("uid"));
+}

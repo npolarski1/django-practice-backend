@@ -1,0 +1,23 @@
+meta {
+  name: Follow unknown user (authed)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/api/profiles/unknown-user-{{uid}}/follow
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+assert {
+  res.status: eq 404
+}
+
+script:post-response {
+  expect(res.body.errors.profile[0]).to.eql("not found");
+}

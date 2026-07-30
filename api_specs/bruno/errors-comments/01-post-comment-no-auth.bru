@@ -1,0 +1,27 @@
+meta {
+  name: Post comment no auth
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/articles/some-slug/comments
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "comment": {
+      "body": "test"
+    }
+  }
+}
+
+assert {
+  res.status: eq 401
+}
+
+script:post-response {
+  expect(res.body.errors.token[0]).to.eql("is missing");
+}

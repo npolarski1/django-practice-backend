@@ -1,0 +1,29 @@
+meta {
+  name: Register empty username
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user": {
+      "username": "",
+      "email": "ea_blank_{{uid}}@test.com",
+      "password": "password123"
+    }
+  }
+}
+
+assert {
+  res.status: eq 422
+}
+
+script:post-response {
+  expect(res.body.errors.username[0]).to.eql("can't be blank");
+}

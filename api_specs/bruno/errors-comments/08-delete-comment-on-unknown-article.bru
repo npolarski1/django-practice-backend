@@ -1,0 +1,23 @@
+meta {
+  name: Delete comment on unknown article
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{host}}/api/articles/unknown-slug-{{uid}}/comments/99999
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+assert {
+  res.status: eq 404
+}
+
+script:post-response {
+  expect(res.body.errors.article[0]).to.eql("not found");
+}

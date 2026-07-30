@@ -1,0 +1,33 @@
+meta {
+  name: Create article 1
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/articles
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "article": {
+      "title": "Pagination 1 {{uid}}",
+      "description": "Page test 1",
+      "body": "Page body 1"
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("slug1", res.body.article.slug);
+}

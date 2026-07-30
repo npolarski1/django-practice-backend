@@ -1,0 +1,19 @@
+meta {
+  name: Delete no auth
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{host}}/api/articles/some-slug
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 401
+}
+
+script:post-response {
+  expect(res.body.errors.token[0]).to.eql("is missing");
+}

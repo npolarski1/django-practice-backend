@@ -1,0 +1,33 @@
+meta {
+  name: Create article empty body
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{host}}/api/articles
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "article": {
+      "title": "Err Body {{uid}}",
+      "description": "test",
+      "body": ""
+    }
+  }
+}
+
+assert {
+  res.status: eq 422
+}
+
+script:post-response {
+  expect(res.body.errors.body[0]).to.eql("can't be blank");
+}

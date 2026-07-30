@@ -1,0 +1,38 @@
+meta {
+  name: Update username and email
+  type: http
+  seq: 19
+}
+
+put {
+  url: {{host}}/api/user
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "user": {
+      "username": "auth_{{uid}}_upd",
+      "email": "auth_{{uid}}_upd@test.com"
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  bru.setVar("updated_token", res.body.user.token);
+  expect(res.body.user.username).to.eql("auth_" + bru.getVar("uid") + "_upd");
+  expect(res.body.user.email).to.eql("auth_" + bru.getVar("uid") + "_upd@test.com");
+  expect(res.body.user.bio).to.eql("Updated bio");
+  expect(res.body.user.image).to.be.null;
+  expect(typeof res.body.user.token).to.eql("string");
+  expect(res.body.user.token).to.not.eql("");
+}

@@ -1,0 +1,25 @@
+meta {
+  name: List comments without auth
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{host}}/api/articles/{{slug}}/comments
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(Array.isArray(res.body.comments)).to.eql(true);
+  expect(res.body.comments.length).to.eql(1);
+  expect(Number.isInteger(res.body.comments[0].id)).to.eql(true);
+  expect(res.body.comments[0].body).to.eql("Test comment body");
+  expect(res.body.comments[0].createdAt).to.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  expect(res.body.comments[0].updatedAt).to.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  expect(res.body.comments[0].author.username).to.eql("cmt_" + bru.getVar("uid"));
+}

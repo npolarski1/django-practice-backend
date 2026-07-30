@@ -1,0 +1,23 @@
+meta {
+  name: Verify image empty string normalization persisted
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{host}}/api/user
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.user.image).to.be.null;
+}

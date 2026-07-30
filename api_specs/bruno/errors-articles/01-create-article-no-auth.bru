@@ -1,0 +1,29 @@
+meta {
+  name: Create article no auth
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/articles
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "article": {
+      "title": "No Auth Article",
+      "description": "test",
+      "body": "test"
+    }
+  }
+}
+
+assert {
+  res.status: eq 401
+}
+
+script:post-response {
+  expect(res.body.errors.token[0]).to.eql("is missing");
+}

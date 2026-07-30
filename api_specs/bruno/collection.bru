@@ -1,0 +1,5 @@
+script:pre-request {
+  if (!bru.getVar("uid")) {
+    bru.setVar("uid", Date.now().toString() + Math.random().toString(36).substring(2, 6));
+  }
+}

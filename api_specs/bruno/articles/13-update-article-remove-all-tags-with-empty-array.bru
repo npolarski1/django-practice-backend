@@ -1,0 +1,32 @@
+meta {
+  name: Update article: remove all tags with empty array
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{host}}/api/articles/{{slug}}
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "article": {
+      "tagList": []
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(Array.isArray(res.body.article.tagList)).to.eql(true);
+  expect(res.body.article.tagList.length).to.eql(0);
+}

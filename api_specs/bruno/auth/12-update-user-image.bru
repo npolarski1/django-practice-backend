@@ -1,0 +1,31 @@
+meta {
+  name: Update user image
+  type: http
+  seq: 12
+}
+
+put {
+  url: {{host}}/api/user
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "user": {
+      "image": "https://example.com/photo.jpg"
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.user.image).to.eql("https://example.com/photo.jpg");
+}

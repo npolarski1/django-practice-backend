@@ -1,0 +1,28 @@
+meta {
+  name: Get single article
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{host}}/api/articles/{{slug}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.article.title).to.eql("Test Article " + bru.getVar("uid"));
+  expect(res.body.article.slug).to.eql(bru.getVar("slug"));
+  expect(res.body.article.description).to.eql("Test description");
+  expect(res.body.article.body).to.eql("Test body content");
+  expect(Array.isArray(res.body.article.tagList)).to.eql(true);
+  expect(res.body.article.createdAt).to.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  expect(res.body.article.updatedAt).to.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  expect(res.body.article.favorited).to.eql(false);
+  expect(res.body.article.favoritesCount).to.eql(0);
+  expect(res.body.article.author.username).to.eql("art_" + bru.getVar("uid"));
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Cleanup: delete articles
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{host}}/api/articles/{{slug1}}
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{celeb_token}}
+}
+
+assert {
+  res.status: eq 204
+}

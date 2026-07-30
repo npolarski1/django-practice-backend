@@ -1,0 +1,19 @@
+meta {
+  name: Cleanup
+  type: http
+  seq: 13
+}
+
+delete {
+  url: {{host}}/api/articles/{{slug}}
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+assert {
+  res.status: eq 204
+}

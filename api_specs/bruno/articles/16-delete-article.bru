@@ -1,0 +1,19 @@
+meta {
+  name: Delete article
+  type: http
+  seq: 16
+}
+
+delete {
+  url: {{host}}/api/articles/{{slug}}
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+assert {
+  res.status: eq 204
+}

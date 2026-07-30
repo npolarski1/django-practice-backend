@@ -1,0 +1,27 @@
+meta {
+  name: Update no auth
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{host}}/api/articles/some-slug
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "article": {
+      "body": "test"
+    }
+  }
+}
+
+assert {
+  res.status: eq 401
+}
+
+script:post-response {
+  expect(res.body.errors.token[0]).to.eql("is missing");
+}

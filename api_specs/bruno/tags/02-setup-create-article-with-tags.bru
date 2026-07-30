@@ -1,0 +1,34 @@
+meta {
+  name: Setup: Create article with tags
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/articles
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "article": {
+      "title": "Tag Article {{uid}}",
+      "description": "For tags",
+      "body": "Article body",
+      "tagList": ["h_{{uid}}", "t_{{uid}}"]
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("slug", res.body.article.slug);
+}

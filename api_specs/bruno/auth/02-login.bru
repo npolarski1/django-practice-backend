@@ -1,0 +1,34 @@
+meta {
+  name: Login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/users/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user": {
+      "email": "auth_{{uid}}@test.com",
+      "password": "password123"
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  bru.setVar("token", res.body.user.token);
+  expect(res.body.user.username).to.eql("auth_" + bru.getVar("uid"));
+  expect(res.body.user.email).to.eql("auth_" + bru.getVar("uid") + "@test.com");
+  expect(res.body.user.bio).to.be.null;
+  expect(res.body.user.image).to.be.null;
+  expect(typeof res.body.user.token).to.eql("string");
+  expect(res.body.user.token).to.not.eql("");
+}

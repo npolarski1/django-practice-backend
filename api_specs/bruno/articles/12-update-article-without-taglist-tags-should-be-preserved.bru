@@ -1,0 +1,34 @@
+meta {
+  name: Update article without tagList: tags should be preserved
+  type: http
+  seq: 12
+}
+
+put {
+  url: {{host}}/api/articles/{{slug}}
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "article": {
+      "body": "Body without touching tags"
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.article.body).to.eql("Body without touching tags");
+  expect(res.body.article.tagList.length).to.eql(2);
+  expect(res.body.article.tagList).to.include("d_" + bru.getVar("uid"));
+  expect(res.body.article.tagList).to.include("t_" + bru.getVar("uid"));
+}

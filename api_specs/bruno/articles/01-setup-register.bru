@@ -1,0 +1,29 @@
+meta {
+  name: Setup: Register
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user": {
+      "username": "art_{{uid}}",
+      "email": "art_{{uid}}@test.com",
+      "password": "password123"
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("token", res.body.user.token);
+}

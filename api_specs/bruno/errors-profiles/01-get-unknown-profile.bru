@@ -1,0 +1,19 @@
+meta {
+  name: GET unknown profile
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/profiles/unknown-user-{{uid}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}
+
+script:post-response {
+  expect(res.body.errors.profile[0]).to.eql("not found");
+}

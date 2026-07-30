@@ -1,0 +1,35 @@
+meta {
+  name: Register
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user": {
+      "username": "auth_{{uid}}",
+      "email": "auth_{{uid}}@test.com",
+      "password": "password123"
+    }
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setVar("reg_token", res.body.user.token);
+  expect(res.body.user.username).to.eql("auth_" + bru.getVar("uid"));
+  expect(res.body.user.email).to.eql("auth_" + bru.getVar("uid") + "@test.com");
+  expect(res.body.user.bio).to.be.null;
+  expect(res.body.user.image).to.be.null;
+  expect(typeof res.body.user.token).to.eql("string");
+  expect(res.body.user.token).to.not.eql("");
+}

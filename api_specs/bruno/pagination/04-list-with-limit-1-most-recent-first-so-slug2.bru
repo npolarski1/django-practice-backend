@@ -1,0 +1,21 @@
+meta {
+  name: List with limit=1 (most recent first, so slug2)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/articles?author=page_{{uid}}&limit=1
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.articles.length).to.eql(1);
+  expect(res.body.articlesCount).to.eql(2);
+  expect(res.body.articles[0].slug).to.eql(bru.getVar("slug2"));
+}

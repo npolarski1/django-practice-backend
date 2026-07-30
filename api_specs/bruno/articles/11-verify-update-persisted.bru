@@ -1,0 +1,31 @@
+meta {
+  name: Verify update persisted
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{host}}/api/articles/{{slug}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.article.title).to.eql("Test Article " + bru.getVar("uid"));
+  expect(res.body.article.slug).to.eql(bru.getVar("slug"));
+  expect(res.body.article.description).to.eql("Test description");
+  expect(res.body.article.body).to.eql("Updated body content");
+  expect(Array.isArray(res.body.article.tagList)).to.eql(true);
+  expect(res.body.article.tagList.length).to.eql(2);
+  expect(res.body.article.tagList).to.include("d_" + bru.getVar("uid"));
+  expect(res.body.article.tagList).to.include("t_" + bru.getVar("uid"));
+  expect(res.body.article.createdAt).to.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  expect(res.body.article.updatedAt).to.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  expect(typeof res.body.article.favorited).to.eql("boolean");
+  expect(Number.isInteger(res.body.article.favoritesCount)).to.eql(true);
+  expect(res.body.article.author.username).to.eql("art_" + bru.getVar("uid"));
+}

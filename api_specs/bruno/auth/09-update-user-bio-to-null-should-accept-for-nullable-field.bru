@@ -1,0 +1,31 @@
+meta {
+  name: Update user bio to null - should accept for nullable field
+  type: http
+  seq: 9
+}
+
+put {
+  url: {{host}}/api/user
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Token {{token}}
+}
+
+body:json {
+  {
+    "user": {
+      "bio": null
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  expect(res.body.user.bio).to.be.null;
+}
