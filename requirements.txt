@@ -1,0 +1,2 @@
+hurl
+psycopg[binary,pool]
