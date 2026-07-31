@@ -5,3 +5,8 @@ class LoginUser(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = ["email", "password"]
+
+class NewUser(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ["username", "email", "password"]
