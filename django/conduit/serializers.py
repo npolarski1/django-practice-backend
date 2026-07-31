@@ -17,7 +17,7 @@ class User(serializers.ModelSerializer):
         model = models.User
         fields = ["email", "username", "bio", "image"]
 
-    token = serializers.SerializerMethodField
+    token = serializers.SerializerMethodField("generate_token")
 
     def generate_token(self, obj):
         # TODO
