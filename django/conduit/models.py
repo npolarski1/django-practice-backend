@@ -3,6 +3,8 @@ from django.contrib.postgres.fields import ArrayField
 
 class User(models.Model):
     username = models.CharField()
+    email = models.CharField()
+    password = models.CharField()
     bio = models.CharField(max_length=150, blank=True)
     image = models.CharField(max_length=150, blank=True)
     following = models.ManyToManyField("self", symmetrical=False)
