@@ -22,3 +22,12 @@ class User(serializers.ModelSerializer):
     def generate_token(self, obj):
         # TODO
         return
+
+class UpdateUser(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ["email", "password", "username", "bio", "image"]
+        extra_kwargs = {
+            "bio" : {"required": False},
+            "image" : {"required": False},
+        }
