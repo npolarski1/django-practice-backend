@@ -56,4 +56,12 @@ class Article(serializers.ModelSerializer):
     def is_favorited(self, obj):
         # TODO
         return
+
+class NewArticle(serializers.ModelSerializer):
+    class Meta:
+        model = models.Article
+        fields = ["title, description, body, tagList"]
+        extra_kwargs = {
+            "tagList" : {"required": False},
+        }
         
