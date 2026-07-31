@@ -64,4 +64,15 @@ class NewArticle(serializers.ModelSerializer):
         extra_kwargs = {
             "tagList" : {"required": False},
         }
+
+class UpdateArticle(serializers.ModelSerializer):
+    class Meta:
+        model = models.Article
+        fields = ["title", "description", "body", "tagList"]
+        extra_kwargs = {
+            "title" : {"required": False},
+            "description" : {"required": False},
+            "body" : {"required": False},
+            "tagList" : {"required": False},
+        }
         
