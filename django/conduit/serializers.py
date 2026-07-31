@@ -43,3 +43,17 @@ class Profile(serializers.ModelSerializer):
     def is_following(self, obj):
         # TODO
         return
+
+class Article(serializers.ModelSerializer):
+    class Meta:
+        model = models.Article
+        fields = ["slug", "title", "description", "body", "tagList", "createdAt", 
+                  "updatedAt", "favoritesCount", "author"]
+
+    favorited = serializers.SerializerMethodField("is_favorited")
+
+    # check if current user has favorited the article
+    def is_favorited(self, obj):
+        # TODO
+        return
+        
