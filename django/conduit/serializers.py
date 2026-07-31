@@ -75,4 +75,8 @@ class UpdateArticle(serializers.ModelSerializer):
             "body" : {"required": False},
             "tagList" : {"required": False},
         }
-        
+
+class Comment(serializers.ModelSerializer):
+    class Meta:
+        model = models.Comment
+        fields = "__all__"
