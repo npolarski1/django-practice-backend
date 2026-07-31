@@ -1,9 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 
-class SiteUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class User(models.Model):
+    username = models.CharField()
     bio = models.CharField(max_length=150, blank=True)
     image = models.CharField(max_length=150, blank=True)
     following = models.ManyToManyField("self", symmetrical=False)
@@ -17,12 +16,12 @@ class Article(models.Model):
     createdAt = models.DateTimeField()
     updatedAt = models.DateTimeField()
     favorites_count = models.IntegerField(default=0)
-    author = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
-    favorited_by = models.ManyToManyField(SiteUser)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    favorited_by = models.ManyToManyField(User)
 
 class Comment(models.Model):
     id = models.IntegerField()
     createdAt = models.DateTimeField()
     updatedAt = models.DateTimeField()
     body = models.CharField(max_length=5000)
-    author = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
