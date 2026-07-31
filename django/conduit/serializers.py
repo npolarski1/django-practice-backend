@@ -31,3 +31,15 @@ class UpdateUser(serializers.ModelSerializer):
             "bio" : {"required": False},
             "image" : {"required": False},
         }
+
+class Profile(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ["bio, image, username"]
+
+    following = serializers.SerializerMethodField("is_following")
+
+    # checks if the current user is following the profile
+    def is_following(self, obj):
+        # TODO
+        return
