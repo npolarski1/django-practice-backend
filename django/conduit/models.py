@@ -18,3 +18,10 @@ class Article(models.Model):
     updatedAt = models.DateTimeField()
     favorites_count = models.IntegerField(default=0)
     author = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
+
+class Comment(models.Model):
+    id = models.IntegerField()
+    createdAt = models.DateTimeField()
+    updatedAt = models.DateTimeField()
+    body = models.CharField(max_length=5000)
+    author = models.ForeignKey(SiteUser, on_delete=models.CASCADE)
