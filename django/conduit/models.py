@@ -22,7 +22,6 @@ class Article(models.Model):
     favorited_by = models.ManyToManyField(User, related_name="favorite_articles")
 
 class Comment(models.Model):
-    id = models.IntegerField()
     createdAt = models.DateTimeField()
     updatedAt = models.DateTimeField()
     body = models.CharField(max_length=5000)
