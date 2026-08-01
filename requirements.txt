@@ -2,3 +2,4 @@ hurl
 psycopg[binary,pool]
 djangorestframework
 djangorestframework-simplejwt
+django==6.0
