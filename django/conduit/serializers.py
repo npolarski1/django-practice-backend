@@ -80,3 +80,9 @@ class Comment(serializers.ModelSerializer):
     class Meta:
         model = models.Comment
         fields = "__all__"
+
+class NewComment(serializers.ModelSerializer):
+    class Meta:
+        model = models.Comment
+        fields = ["body"]
+        
