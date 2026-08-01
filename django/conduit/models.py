@@ -18,8 +18,8 @@ class Article(models.Model):
     createdAt = models.DateTimeField()
     updatedAt = models.DateTimeField()
     favorites_count = models.IntegerField(default=0)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    favorited_by = models.ManyToManyField(User)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="authored_articles")
+    favorited_by = models.ManyToManyField(User, related_name="favorite_articles")
 
 class Comment(models.Model):
     id = models.IntegerField()
