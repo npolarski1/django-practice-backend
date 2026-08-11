@@ -118,3 +118,14 @@ def unfollow_user_by_username(request):
     #   404 if profile doesn't exist
     #   422 if already unfollowed
     return Response()
+
+# /articles
+# Get recent articles globally
+@api_view(["GET"])
+def get_articles(request):
+    # TODO
+    # query db for articles and filter by query params
+    # return:
+    #   200 with MultipleArticlesResponse on sucess
+    #   422 for generic error
+    return Response()
