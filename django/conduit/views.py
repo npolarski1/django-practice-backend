@@ -50,3 +50,15 @@ def login(request):
         else:
             # TODO return 408 error code
             return Response()
+
+# /user
+# Gets the currently logged-in user
+@api_view(["GET"])
+def get_current_user(request):
+
+    # TODO get currently logged in user
+    # 200 code for success
+    # 401 if logged out
+    # 422 for generic error?
+
+    return Response()
