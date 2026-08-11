@@ -78,3 +78,15 @@ def update_current_user(request):
     else:
         return Response()
         # 422 error
+
+# /profiles/{username}
+# Get a profile
+@api_view(["GET"])
+def get_profile_by_username(request):
+
+    # TODO
+    # get username param
+    # 200 with ProfileResponse on success
+    # 404 if profile doesn't exist
+    # 422 for generic error
+    return Response()
