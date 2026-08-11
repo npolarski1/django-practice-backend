@@ -62,3 +62,19 @@ def get_current_user(request):
     # 422 for generic error?
 
     return Response()
+
+# /user
+# Update current user
+@api_view(["PUT"])
+def update_current_user(request):
+    serializer = serializers.UpdateUser(data=request.data)
+
+    if serializer.is_valid():
+        # TODO
+        # get current user
+        # update user data with new data
+        # save to db
+        return Response()
+    else:
+        return Response()
+        # 422 error
