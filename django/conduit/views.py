@@ -9,6 +9,8 @@ from rest_framework import status
 from models import User
 from django.db.models import Model
 
+# /users
+# Register a new user
 @api_view(["POST"])
 def create_user(request):
     serializer = serializers.NewUser(data=request.data)
