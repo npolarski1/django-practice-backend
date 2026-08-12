@@ -129,3 +129,22 @@ def get_articles(request):
     #   200 with MultipleArticlesResponse on sucess
     #   422 for generic error
     return Response()
+
+# /articles
+# Create an article
+@api_view(["POST"])
+def create_article(request):
+    serializer = serializers.NewArticle(data=request.data)
+
+    if serializer.is_valid():
+        valid_data = serializer.validated_data
+        # TODO
+        # create new article from valid_data
+        # save article to db
+        # return:
+        #   201 with SingleArticleResponse on success
+        #   401 if not logged in
+        #   409 if article with stub already exists
+    else:
+        # 422 for invalid data
+        return Response()
