@@ -148,3 +148,17 @@ def create_article(request):
     else:
         # 422 for invalid data
         return Response()
+
+# /articles/feed
+# Get most recent articles from users you follow. Use query parameters to limit. Auth is required
+@api_view(["GET"])
+def get_articles_feed(request):
+    # TODO
+    # get followed users list for current user
+    # get articles authored for each followed user
+    # aggregate to build feed list
+    # return:
+    #   200 with MultipleArticlesResponse
+    #   401 when not logged in
+    #   422 for generic error
+    return Response()
