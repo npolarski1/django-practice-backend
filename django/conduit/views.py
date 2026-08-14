@@ -262,3 +262,18 @@ def delete_article_comment(request):
     #   404 if article or comment doesn't exist
     #   422 for generic error
     return Response()
+
+# /articles/{slug}/favorite
+# Favorite an article. Auth is required
+@api_view(["POST"])
+def create_article_favorite(request):
+    # TODO
+    # get article with matching stub from db
+    # add article to user's favorites
+    # save user's favorites to db
+    # return:
+    #   200 with SingleArticleResponse
+    #   401 if not logged in
+    #   404 if article doesn't exist
+    #   422 for generic error
+    return Response()
