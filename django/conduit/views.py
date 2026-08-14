@@ -293,3 +293,13 @@ def delete_article_favorite(request):
     #   404 if article doesn't exist
     #   422 for generic error
     return Response()
+
+# /tags
+# Get tags. Auth not required
+@api_view(["GET"])
+def get_tags(request):
+    # TODO
+    # return:
+    #   200 with TagsResponse
+    #   422 for generic error
+    return Response()
