@@ -174,3 +174,24 @@ def get_article(request):
     #   404 if no article found
     #   422 for generic error
     return Response()
+
+# /articles/{slug}
+# Update an article. Auth is required
+@api_view(["PUT"])
+def update_article(request):
+    serializer = serializers.UpdateArticle(data=request.data)
+
+    if serializer.is_valid():
+        valid_data = serializer.validated_data
+        # TODO
+        # get article with matching slug
+        # update with valid_data
+        # save to db
+        # return:
+        #   200 with SingleArticleResponse
+        #   401 if not logged in
+        #   403 if current user hasn't authored article
+        #   404 if article not found
+        return Response()
+    # 422 for invalid data
+    return Response()
