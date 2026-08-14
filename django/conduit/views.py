@@ -162,3 +162,15 @@ def get_articles_feed(request):
     #   401 when not logged in
     #   422 for generic error
     return Response()
+
+# /articles/{slug}
+# Get an article. Auth not required
+@api_view(["GET"])
+def get_article(request):
+    # TODO
+    # get article with matching slug
+    # return:
+    #   200 with SingleArticleResponse
+    #   404 if no article found
+    #   422 for generic error
+    return Response()
