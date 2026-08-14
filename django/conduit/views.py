@@ -210,3 +210,17 @@ def delete_article(request):
     #   404 if article not found
     #   422 for generic error
     return Response()
+
+# /articles/{slug}/comments
+# Get the comments for an article. Auth is optional
+@api_view(["GET"])
+def get_article_comments(request):
+    # TODO
+    # get article with matching slug from db
+    # get article's comments
+    # return:
+    #   200 with MultipleCommentsResponse
+    #   401 if not logged in
+    #   404 if article not found
+    #   422 for generic error
+    return Response()
