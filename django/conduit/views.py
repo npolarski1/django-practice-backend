@@ -224,3 +224,26 @@ def get_article_comments(request):
     #   404 if article not found
     #   422 for generic error
     return Response()
+
+# /articles/{slug}/comments
+# Create a comment for an article. Auth is required
+@api_view(["POST"])
+def create_article_comment(request):
+    serializer = serializers.NewComment(data=request.data)
+
+    if serializer.is_valid():
+        valid_data = serializer.validated_data
+
+        # TODO
+        # get article with matching slug from db
+        # get comments for article
+        # create comment from valid_data
+        # add comment to article's comments
+        # save to db
+        # return:
+        #   201 with SingleCommentResponse
+        #   401 if not logged in
+        #   404 if article not found
+        return Response()
+    # 422 for invalid data
+    return Response()
