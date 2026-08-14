@@ -195,3 +195,18 @@ def update_article(request):
         return Response()
     # 422 for invalid data
     return Response()
+
+# /articles/{slug}
+# Delete an article. Auth is required
+@api_view(["DELETE"])
+def delete_article(request):
+    # TODO
+    # find article with matching slug in db
+    # delete article from db
+    # return:
+    #   204 with EmptyOkResponse
+    #   401 if not logged in
+    #   403 if user hasn't authored article
+    #   404 if article not found
+    #   422 for generic error
+    return Response()
