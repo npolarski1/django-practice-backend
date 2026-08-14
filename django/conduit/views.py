@@ -247,3 +247,18 @@ def create_article_comment(request):
         return Response()
     # 422 for invalid data
     return Response()
+
+# /articles/{slug}/comments/{id}
+# Delete a comment for an article. Auth is required
+@api_view(["DELETE"])
+def delete_article_comment(request):
+    # TODO
+    # find comment from id in db
+    # delete comment from db
+    # return:
+    #   204 with EmptyOkResponse
+    #   401 if not logged in
+    #   403 if user didn't author comment
+    #   404 if article or comment doesn't exist
+    #   422 for generic error
+    return Response()
