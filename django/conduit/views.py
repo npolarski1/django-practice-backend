@@ -52,32 +52,31 @@ def login(request):
             return Response()
 
 # /user
-# Gets the currently logged-in user
-@api_view(["GET"])
-def get_current_user(request):
-
-    # TODO get currently logged in user
-    # 200 code for success
-    # 401 if logged out
-    # 422 for generic error?
-
-    return Response()
-
-# /user
-# Update current user
-@api_view(["PUT"])
-def update_current_user(request):
-    serializer = serializers.UpdateUser(data=request.data)
-
-    if serializer.is_valid():
-        # TODO
-        # get current user
-        # update user data with new data
-        # save to db
+@api_view(["GET", "PUT"])
+def current_user(request):
+    # Gets the currently logged-in user
+    if request.method == "GET":
+        # TODO get currently logged in user
+        # 200 code for success
+        # 401 if logged out
+        # 422 for generic error?
         return Response()
-    else:
-        return Response()
-        # 422 error
+    # Update current user
+    elif request.method == "PUT":
+        serializer = serializers.UpdateUser(data=request.data)
+        
+        if serializer.is_valid():
+            # TODO
+            # get current user
+            # update user data with new data
+            # save to db
+            # return:
+            #   200 with UserResponse on success
+            #   401 if logged out
+            return Response()
+        else:
+            # return 422 for invalid data
+            return Response()
 
 # /profiles/{username}
 # Get a profile
