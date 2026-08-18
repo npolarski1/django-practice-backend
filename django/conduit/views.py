@@ -92,31 +92,31 @@ def get_profile_by_username(request):
 
 # /profiles/{username}/follow
 # Follow a user
-@api_view(["POST"])
-def follow_user_by_username(request):
-    # TODO
-    # get user from username param
-    # add user to following for logged in user
-    # 200 with ProfileResponse on success
-    # 401 if not logged in
-    # 404 if profile doesn't exist
-    # 422 for generic error
-    return Response()
-
-# /profiles/{username}/follow
-# Unfollow a user
-@api_view(["DELETE"])
-def unfollow_user_by_username(request):
-    # TODO
-    # get user from username param
-    # remove user from following list
-    # save updated current user following list to db
-    # return:
-    #   200 with ProfileResponse on success
-    #   401 if not logged in
-    #   404 if profile doesn't exist
-    #   422 if already unfollowed
-    return Response()
+@api_view(["POST", "DELETE"])
+def follow_unfollow_user_by_username(request):
+    # /profiles/{username}/follow
+    if request.method == "POST":
+        # TODO
+        # get user from username param
+        # add user to following for logged in user
+        # 200 with ProfileResponse on success
+        # 401 if not logged in
+        # 404 if profile doesn't exist
+        # 422 for generic error
+        return Response()
+    
+    # Unfollow a user
+    elif request.method == "DELETE":
+        # TODO
+        # get user from username param
+        # remove user from following list
+        # save updated current user following list to db
+        # return:
+        #   200 with ProfileResponse on success
+        #   401 if not logged in
+        #   404 if profile doesn't exist
+        #   422 if already unfollowed
+        return Response()
 
 # /articles
 # Get recent articles globally
