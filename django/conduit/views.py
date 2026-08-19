@@ -253,35 +253,33 @@ def delete_article_comment(request):
     return Response()
 
 # /articles/{slug}/favorite
-# Favorite an article. Auth is required
-@api_view(["POST"])
-def create_article_favorite(request):
-    # TODO
-    # get article with matching stub from db
-    # add article to user's favorites
-    # save user's favorites to db
-    # return:
-    #   200 with SingleArticleResponse
-    #   401 if not logged in
-    #   404 if article doesn't exist
-    #   422 for generic error
-    return Response()
-
-# /articles/{slug}/favorite
-# Unfavorite an article. Auth is required
-@api_view(["DELETE"])
-def delete_article_favorite(request):
-    # TODO
-    # get article with matching stub from db
-    # get user's favorites from db
-    # remove article from user's favorites
-    # save to db
-    # return:
-    #   200 with SingleArticleResponse
-    #   401 if not logged in
-    #   404 if article doesn't exist
-    #   422 for generic error
-    return Response()
+@api_view(["POST", "DELETE"])
+def create_delete_article_favorite(request):
+    # Favorite an article. Auth is required
+    if request.method == "POST":
+        # TODO
+        # get article with matching stub from db
+        # add article to user's favorites
+        # save user's favorites to db
+        # return:
+        #   200 with SingleArticleResponse
+        #   401 if not logged in
+        #   404 if article doesn't exist
+        #   422 for generic error
+        return Response()
+    # Unfavorite an article. Auth is required
+    elif request.method == "DELETE":
+        # TODO
+        # get article with matching stub from db
+        # get user's favorites from db
+        # remove article from user's favorites
+        # save to db
+        # return:
+        #   200 with SingleArticleResponse
+        #   401 if not logged in
+        #   404 if article doesn't exist
+        #   422 for generic error
+        return Response()
 
 # /tags
 # Get tags. Auth not required
