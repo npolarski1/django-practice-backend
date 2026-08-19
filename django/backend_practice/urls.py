@@ -16,7 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from conduit import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('users/', views.create_user),
+    path('users/login/', views.login),
+    path('user/', views.current_user),
+    path('profiles/<str:username>/', views.get_profile_by_username),
+    path('profiles/<str:username>/follow/', views.follow_unfollow_user_by_username),
+    path('articles/', views.get_create_articles),
+    path('articles/feed', views.get_articles_feed),
+    path('articles/<slug:slug>/', views.get_update_delete_article),
+    path('articles/<slug:slug>/comments/', views.get_addto_article_comments),
+    path('articles/<slug:slug>/comments/<int:id>/', views.delete_article_comment),
+    path('articles/<slug:slug>/favorite', views.create_delete_article_favorite),
+    path('tags/', views.get_tags)
 ]
