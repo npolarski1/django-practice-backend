@@ -161,52 +161,47 @@ def get_articles_feed(request):
     return Response()
 
 # /articles/{slug}
-# Get an article. Auth not required
-@api_view(["GET"])
-def get_article(request):
-    # TODO
-    # get article with matching slug
-    # return:
-    #   200 with SingleArticleResponse
-    #   404 if no article found
-    #   422 for generic error
-    return Response()
-
-# /articles/{slug}
-# Update an article. Auth is required
-@api_view(["PUT"])
-def update_article(request):
-    serializer = serializers.UpdateArticle(data=request.data)
-
-    if serializer.is_valid():
-        valid_data = serializer.validated_data
+@api_view(["GET", "PUT", "DELETE"])
+def get_update_delete_article(request):
+    # Get an article. Auth not required
+    if request.method == "GET":
         # TODO
         # get article with matching slug
-        # update with valid_data
-        # save to db
         # return:
         #   200 with SingleArticleResponse
-        #   401 if not logged in
-        #   403 if current user hasn't authored article
-        #   404 if article not found
+        #   404 if no article found
+        #   422 for generic error
         return Response()
-    # 422 for invalid data
-    return Response()
-
-# /articles/{slug}
-# Delete an article. Auth is required
-@api_view(["DELETE"])
-def delete_article(request):
-    # TODO
-    # find article with matching slug in db
-    # delete article from db
-    # return:
-    #   204 with EmptyOkResponse
-    #   401 if not logged in
-    #   403 if user hasn't authored article
-    #   404 if article not found
-    #   422 for generic error
-    return Response()
+    # Update an article. Auth is required
+    elif request.method == "PUT":
+        serializer = serializers.UpdateArticle(data=request.data)
+        
+        if serializer.is_valid():
+            valid_data = serializer.validated_data
+            # TODO
+            # get article with matching slug
+            # update with valid_data
+            # save to db
+            # return:
+            #   200 with SingleArticleResponse
+            #   401 if not logged in
+            #   403 if current user hasn't authored article
+            #   404 if article not found
+            return Response()
+        # 422 for invalid data
+        return Response()
+    # Delete an article. Auth is required
+    elif request.method == "DELETE":
+        # TODO
+        # find article with matching slug in db
+        # delete article from db
+        # return:
+        #   204 with EmptyOkResponse
+        #   401 if not logged in
+        #   403 if user hasn't authored article
+        #   404 if article not found
+        #   422 for generic error
+        return Response()
 
 # /articles/{slug}/comments
 # Get the comments for an article. Auth is optional
