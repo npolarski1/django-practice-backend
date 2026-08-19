@@ -204,41 +204,38 @@ def get_update_delete_article(request):
         return Response()
 
 # /articles/{slug}/comments
-# Get the comments for an article. Auth is optional
-@api_view(["GET"])
-def get_article_comments(request):
-    # TODO
-    # get article with matching slug from db
-    # get article's comments
-    # return:
-    #   200 with MultipleCommentsResponse
-    #   401 if not logged in
-    #   404 if article not found
-    #   422 for generic error
-    return Response()
-
-# /articles/{slug}/comments
-# Create a comment for an article. Auth is required
-@api_view(["POST"])
-def create_article_comment(request):
-    serializer = serializers.NewComment(data=request.data)
-
-    if serializer.is_valid():
-        valid_data = serializer.validated_data
-
+@api_view(["GET", "POST"])
+def get_addto_article_comments(request):
+    # Get the comments for an article. Auth is optional
+    if request.method == "GET":
         # TODO
         # get article with matching slug from db
-        # get comments for article
-        # create comment from valid_data
-        # add comment to article's comments
-        # save to db
+        # get article's comments
         # return:
-        #   201 with SingleCommentResponse
+        #   200 with MultipleCommentsResponse
         #   401 if not logged in
         #   404 if article not found
+        #   422 for generic error
         return Response()
-    # 422 for invalid data
-    return Response()
+    # Create a comment for an article. Auth is required
+    elif request.method == "POST":
+        serializer = serializers.NewComment(data=request.data)
+        
+        if serializer.is_valid():
+            valid_data = serializer.validated_data
+            # TODO
+            # get article with matching slug from db
+            # get comments for article
+            # create comment from valid_data
+            # add comment to article's comments
+            # save to db
+            # return:
+            #   201 with SingleCommentResponse
+            #   401 if not logged in
+            #   404 if article not found
+            return Response()
+        # 422 for invalid data
+        return Response()
 
 # /articles/{slug}/comments/{id}
 # Delete a comment for an article. Auth is required
