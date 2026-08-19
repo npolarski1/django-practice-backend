@@ -119,34 +119,32 @@ def follow_unfollow_user_by_username(request):
         return Response()
 
 # /articles
-# Get recent articles globally
-@api_view(["GET"])
-def get_articles(request):
-    # TODO
-    # query db for articles and filter by query params
-    # return:
-    #   200 with MultipleArticlesResponse on sucess
-    #   422 for generic error
-    return Response()
-
-# /articles
-# Create an article
-@api_view(["POST"])
-def create_article(request):
-    serializer = serializers.NewArticle(data=request.data)
-
-    if serializer.is_valid():
-        valid_data = serializer.validated_data
+@api_view(["GET", "POST"])
+def get_create_articles(request):
+    # Get recent articles globally
+    if request.method == "GET":
         # TODO
-        # create new article from valid_data
-        # save article to db
+        # query db for articles and filter by query params
         # return:
-        #   201 with SingleArticleResponse on success
-        #   401 if not logged in
-        #   409 if article with stub already exists
-    else:
-        # 422 for invalid data
+        #   200 with MultipleArticlesResponse on sucess
+        #   422 for generic error
         return Response()
+    # Create an article
+    elif request.method == "POST":
+        serializer = serializers.NewArticle(data=request.data)
+        
+        if serializer.is_valid():
+            valid_data = serializer.validated_data
+            # TODO
+            # create new article from valid_data
+            # save article to db
+            # return:
+            #   201 with SingleArticleResponse on success
+            #   401 if not logged in
+            #   409 if article with stub already exists
+        else:
+            # 422 for invalid data
+            return Response()
 
 # /articles/feed
 # Get most recent articles from users you follow. Use query parameters to limit. Auth is required
