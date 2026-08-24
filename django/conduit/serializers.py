@@ -1,5 +1,5 @@
 from rest_framework import serializers
-import models
+import conduit.models as models
 
 class LoginUser(serializers.ModelSerializer):
     class Meta:
