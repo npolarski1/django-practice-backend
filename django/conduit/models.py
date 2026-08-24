@@ -9,6 +9,8 @@ class User(AbstractBaseUser):
     image = models.CharField(max_length=150, null=True)
     following = models.ManyToManyField("self", symmetrical=False)
 
+    USERNAME_FIELD = 'email'
+
 class Article(models.Model):
     slug = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
