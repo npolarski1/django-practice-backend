@@ -13,14 +13,24 @@ from django.db.models import Model
 # Register a new user
 @api_view(["POST"])
 def create_user(request):
-    serializer = serializers.NewUser(data=request.data)
+    # pass in empty dict to get() in case of bad request because serializer expects dict
+    serializer = serializers.NewUser(data=request.data.get("user", {}))
 
     if serializer.is_valid():
-        serializer.save()
+        assert isinstance(serializer.validated_data, dict) # to silence Pylance
 
-        # TODO implement error handling (409/422 responses)
+        new_user = User(**serializer.validated_data)
 
-        return Response(serializers.User(serializer.data), status=status.HTTP_201_CREATED)
+        # return 409 if user already created
+        if User.objects.filter(email=new_user.email).exists():
+            return Response(status=status.HTTP_409_CONFLICT)
+
+        # save to db and return 201 on success
+        new_user.save()
+        return Response({"user": serializers.User(new_user).data}, status=status.HTTP_201_CREATED)
+    else:
+        # return 422 error for invalid request schema
+        return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 # /users/login
 # Login for existing user
