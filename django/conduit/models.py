@@ -5,8 +5,8 @@ class User(models.Model):
     username = models.CharField()
     email = models.CharField()
     password = models.CharField()
-    bio = models.CharField(max_length=150, blank=True)
-    image = models.CharField(max_length=150, blank=True)
+    bio = models.CharField(max_length=150, null=True)
+    image = models.CharField(max_length=150, null=True)
     following = models.ManyToManyField("self", symmetrical=False)
 
 class Article(models.Model):
