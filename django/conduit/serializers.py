@@ -15,7 +15,7 @@ class NewUser(serializers.ModelSerializer):
 class User(serializers.ModelSerializer):
     class Meta:
         model = models.User
-        fields = ["email", "username", "bio", "image"]
+        fields = ["email", "username", "bio", "image", "token"]
 
     token = serializers.SerializerMethodField("generate_token")
 
