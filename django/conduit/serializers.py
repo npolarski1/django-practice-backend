@@ -1,5 +1,6 @@
 from rest_framework import serializers
 import conduit.models as models
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class LoginUser(serializers.ModelSerializer):
     class Meta:
@@ -20,8 +21,8 @@ class User(serializers.ModelSerializer):
     token = serializers.SerializerMethodField("generate_token")
 
     def generate_token(self, obj):
-        # TODO
-        return
+        refresh = RefreshToken.for_user(obj)
+        return str(refresh.access_token)
 
 class UpdateUser(serializers.ModelSerializer):
     class Meta:
