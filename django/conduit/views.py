@@ -37,7 +37,7 @@ def create_user(request):
 @api_view(["POST"])
 def login(request):
     # convert json request data to serializer
-    serializer = serializers.LoginUser(data=request.data)
+    serializer = serializers.LoginUser(data=request.data.get("user", {}))
 
     # validate data matches expected schema
     if serializer.is_valid():
@@ -48,18 +48,20 @@ def login(request):
         # check that user with inputted email exists
         try:
             user = User.objects.get(email=valid_data.get("email"))
-        # if user doesn't exist, return 401 error code
+        # if email is wrong, return 401 error code
         except Model.DoesNotExist:
-            # TODO
-            return Response()
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         # check password matches
         if user.password == valid_data.get("password"):
-            # TODO return with JWT
-            return Response()
+            # return with token and 200 status if correct password
+            return Response({"user": serializers.User(user).data}, status=status.HTTP_200_OK)
         else:
-            # TODO return 408 error code
-            return Response()
+            # return 401 if wrong password
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        # return 422 for invalid request schema
+        return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 # /user
 @api_view(["GET", "PUT"])
