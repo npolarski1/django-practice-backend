@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth.models import AbstractBaseUser
 
-class User(models.Model):
-    username = models.CharField()
-    email = models.CharField()
-    password = models.CharField()
+class User(AbstractBaseUser):
+    username = models.CharField(unique=True)
+    email = models.CharField(unique=True)
     bio = models.CharField(max_length=150, null=True)
     image = models.CharField(max_length=150, null=True)
     following = models.ManyToManyField("self", symmetrical=False)
