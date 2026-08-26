@@ -28,9 +28,19 @@ class UpdateUser(serializers.ModelSerializer):
         model = models.User
         fields = ["email", "password", "username", "bio", "image"]
         extra_kwargs = {
+            "email": {"required": False},
+            "password": {"required": False},
+            "username": {"required": False},
             "bio" : {"required": False},
             "image" : {"required": False},
         }
+
+    def validate(self, attrs):
+        # validate at least one user attribute is being updated
+        if not any(field in attrs for field in self.fields):
+            raise serializers.ValidationError("No user attributes specified to be updated")
+        
+        return attrs
 
 class Profile(serializers.ModelSerializer):
     class Meta:
