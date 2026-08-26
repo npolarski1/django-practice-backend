@@ -15,6 +15,9 @@ class User(AbstractBaseUser):
         # set bio to null if it's an empty string and not already
         if self.bio is not None and not self.bio.strip():
             self.bio = None
+        # same for image
+        if self.image is not None and not self.image.strip():
+            self.image = None
 
         super().save(*args, **kwargs)
 
