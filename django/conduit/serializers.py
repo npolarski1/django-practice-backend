@@ -15,6 +15,11 @@ class NewUser(serializers.ModelSerializer):
                 "error_messages": {
                     "blank": "can't be blank"
                 }
+            },
+            "email": {
+                "error_messages": {
+                    "blank": "can't be blank"
+                }
             }
         }
 
