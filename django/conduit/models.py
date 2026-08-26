@@ -6,7 +6,7 @@ class User(AbstractBaseUser):
     username = models.CharField(unique=True)
     email = models.EmailField(unique=True)
     bio = models.CharField(max_length=150, blank=True, null=True)
-    image = models.CharField(max_length=150, null=True)
+    image = models.CharField(max_length=150, blank=True, null=True)
     following = models.ManyToManyField("self", symmetrical=False)
 
     USERNAME_FIELD = 'email'
