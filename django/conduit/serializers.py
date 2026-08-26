@@ -10,6 +10,13 @@ class NewUser(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = ["username", "email", "password"]
+        extra_kwargs = {
+            "username": {
+                "error_messages": {
+                    "blank": "can't be blank"
+                }
+            }
+        }
 
 # used in UserResponse
 class User(serializers.ModelSerializer):
