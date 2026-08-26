@@ -2,10 +2,9 @@ from rest_framework import serializers
 import conduit.models as models
 from rest_framework_simplejwt.tokens import RefreshToken
 
-class LoginUser(serializers.ModelSerializer):
-    class Meta:
-        model = models.User
-        fields = ["email", "password"]
+class LoginUser(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
 
 class NewUser(serializers.ModelSerializer):
     class Meta:
