@@ -71,20 +71,35 @@ def current_user(request):
         return Response({"user": serializers.User(request.user).data}, status=status.HTTP_200_OK)
     # Update current user
     elif request.method == "PUT":
-        serializer = serializers.UpdateUser(data=request.data)
+        serializer = serializers.UpdateUser(data=request.data.get("user", {}))
         
         if serializer.is_valid():
-            # TODO
+            valid_data = serializer.validated_data
+            assert isinstance(valid_data, dict)
+            
             # get current user
+            user = request.user
+
             # update user data with new data
+            if "email" in valid_data:
+                user.email = valid_data["email"]
+            if "username" in valid_data:
+                user.username = valid_data["username"]
+            if "password" in valid_data:
+                user.password = valid_data["password"]
+            if "bio" in valid_data:
+                user.bio = valid_data["bio"]
+            if "image" in valid_data:
+                user.image = valid_data["image"]
+
             # save to db
-            # return:
-            #   200 with UserResponse on success
-            #   401 if logged out
-            return Response()
+            user.save(update_fields=["username", "password", "bio", "image", "email"])
+
+            return Response({"user": serializers.User(user).data}, status=status.HTTP_200_OK)
         else:
             # return 422 for invalid data
-            return Response()
+            logging.error(f"Invalid request schema: {serializer.errors}")
+            return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 # /profiles/{username}
 # Get a profile
