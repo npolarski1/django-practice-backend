@@ -1,13 +1,11 @@
-from psycopg import IntegrityError
-
 import conduit.serializers as serializers
-
-from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from conduit.models import User
 from django.db.models import Model
+import logging
 
 # /users
 # Register a new user
@@ -61,18 +59,16 @@ def login(request):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
     else:
         # return 422 for invalid request schema
+        logging.error(f"Invalid request schema: {serializer.errors}")
         return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 # /user
 @api_view(["GET", "PUT"])
+@permission_classes([IsAuthenticated])
 def current_user(request):
     # Gets the currently logged-in user
     if request.method == "GET":
-        # TODO get currently logged in user
-        # 200 code for success
-        # 401 if logged out
-        # 422 for generic error?
-        return Response()
+        return Response({"user": serializers.User(request.user).data}, status=status.HTTP_200_OK)
     # Update current user
     elif request.method == "PUT":
         serializer = serializers.UpdateUser(data=request.data)
