@@ -11,6 +11,13 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'email'
 
+    def save(self, *args, **kwargs):
+        # set bio to null if it's an empty string and not already
+        if self.bio is not None and not self.bio.strip():
+            self.bio = None
+
+        super().save(*args, **kwargs)
+
 class Article(models.Model):
     slug = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
