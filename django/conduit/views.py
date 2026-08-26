@@ -28,7 +28,11 @@ def create_user(request):
         return Response({"user": serializers.User(new_user).data}, status=status.HTTP_201_CREATED)
     else:
         # return 422 error for invalid request schema
-        return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        logging.error(f"Invalid request schema: {serializer.errors}")
+
+        # api specs expect 'errors' key
+        errors = {"errors": serializer.errors}
+        return Response(errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 # /users/login
 # Login for existing user
