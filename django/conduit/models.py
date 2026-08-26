@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractBaseUser
 class User(AbstractBaseUser):
     username = models.CharField(unique=True)
     email = models.EmailField(unique=True)
-    bio = models.CharField(max_length=150, null=True)
+    bio = models.CharField(max_length=150, blank=True, null=True)
     image = models.CharField(max_length=150, null=True)
     following = models.ManyToManyField("self", symmetrical=False)
 
