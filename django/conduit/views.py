@@ -62,6 +62,8 @@ def login(request):
     else:
         assert isinstance(serializer.errors, dict) # silence Pylance, we know errors is populated
 
+        logging.error(f"Invalid request: {serializer.errors}")
+
         # return 422 by default 
         status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
 
@@ -71,7 +73,6 @@ def login(request):
                 status_code = status.HTTP_401_UNAUTHORIZED
                 return Response({"errors": {"credentials": ["invalid"]}}, status_code)
 
-        logging.error(f"Invalid request: {serializer.errors}")
         return Response({"errors": serializer.errors}, status_code)
 
 # /user
