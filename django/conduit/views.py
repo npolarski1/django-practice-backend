@@ -31,6 +31,9 @@ def create_user(request):
         if username_errors := serializer.errors.get("username"):
             if username_errors[0].code == "unique":
                 return Response({"errors": serializer.errors}, status=status.HTTP_409_CONFLICT)
+        if email_errors := serializer.errors.get("email"):
+            if email_errors[0].code == "unique":
+                return Response({"errors": serializer.errors}, status=status.HTTP_409_CONFLICT)
 
         # return 422 error for other errors
         return Response({"errors": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
