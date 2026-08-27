@@ -2,10 +2,21 @@ from rest_framework import serializers
 import conduit.models as models
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.validators import UniqueValidator
+from django.contrib.auth.hashers import check_password
 
 class LoginUser(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+
+    def validate(self, data):
+        user = models.User.objects.get(email=data["email"])
+
+        if not check_password(data.get('password'), user.password):
+            raise serializers.ValidationError(
+                {"password": "invalid"}
+            )
+    
+        return data
 
 class NewUser(serializers.ModelSerializer):
     class Meta:
