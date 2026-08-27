@@ -58,17 +58,21 @@ def login(request):
         except Model.DoesNotExist:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-        # check password matches
-        if user.password == valid_data.get("password"):
-            # return with token and 200 status if correct password
-            return Response({"user": serializers.User(user).data}, status=status.HTTP_200_OK)
-        else:
-            # return 401 if wrong password
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"user": serializers.User(user).data}, status=status.HTTP_200_OK)
     else:
-        # return 422 for invalid request schema
-        logging.error(f"Invalid request schema: {serializer.errors}")
-        return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        assert isinstance(serializer.errors, dict) # silence Pylance, we know errors is populated
+
+        # return 422 by default 
+        status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
+
+        # return 401 for invalid password
+        if password_errors := serializer.errors.get("password"):
+            if password_errors[0].code == "invalid":
+                status_code = status.HTTP_401_UNAUTHORIZED
+                return Response({"errors": {"credentials": ["invalid"]}}, status_code)
+
+        logging.error(f"Invalid request: {serializer.errors}")
+        return Response({"errors": serializer.errors}, status_code)
 
 # /user
 @api_view(["GET", "PUT"])
