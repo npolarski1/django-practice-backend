@@ -15,9 +15,12 @@ def create_user(request):
     serializer = serializers.NewUser(data=request.data.get("user", {}))
 
     if serializer.is_valid():
-        assert isinstance(serializer.validated_data, dict) # to silence Pylance
+        valid_data = serializer.validated_data
+        assert isinstance(valid_data, dict) # to silence Pylance
 
-        new_user = User(**serializer.validated_data)
+        new_user = User(**valid_data)
+        # set_password hashes the password
+        new_user.set_password(valid_data.get("password"))
 
         # save to db and return 201 on success
         new_user.save()
