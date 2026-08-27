@@ -19,20 +19,21 @@ def create_user(request):
 
         new_user = User(**serializer.validated_data)
 
-        # return 409 if user already created
-        if User.objects.filter(email=new_user.email).exists():
-            return Response(status=status.HTTP_409_CONFLICT)
-
         # save to db and return 201 on success
         new_user.save()
         return Response({"user": serializers.User(new_user).data}, status=status.HTTP_201_CREATED)
     else:
-        # return 422 error for invalid request schema
-        logging.error(f"Invalid request schema: {serializer.errors}")
+        logging.error(f"Invalid request: {serializer.errors}")
 
-        # api specs expect 'errors' key
-        errors = {"errors": serializer.errors}
-        return Response(errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        assert isinstance(serializer.errors, dict) # silence Pylance, we know errors is populated
+
+        # return 409 if user already exists
+        if username_errors := serializer.errors.get("username"):
+            if username_errors[0].code == "unique":
+                return Response({"errors": serializer.errors}, status=status.HTTP_409_CONFLICT)
+
+        # return 422 error for other errors
+        return Response({"errors": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 # /users/login
 # Login for existing user
