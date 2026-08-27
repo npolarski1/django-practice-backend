@@ -12,9 +12,17 @@ class NewUser(serializers.ModelSerializer):
         model = models.User
         fields = ["username", "email", "password"]
         extra_kwargs = {
+            # 'unique' errors ignore the error_messages dict for a field
+            # so we need to explicitly add the UniqueValidator with our custom message
             "username" : {
-                # 'unique' errors ignore the error_messages dict for a field
-                # so we need to explicitly add the UniqueValidator with our custom message
+                "validators" : [
+                    UniqueValidator(
+                        queryset=models.User.objects.all(),
+                        message="has already been taken"
+                    )
+                ]
+            },
+            "email" : {
                 "validators" : [
                     UniqueValidator(
                         queryset=models.User.objects.all(),
