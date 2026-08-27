@@ -1,6 +1,7 @@
 from rest_framework import serializers
 import conduit.models as models
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.validators import UniqueValidator
 
 class LoginUser(serializers.Serializer):
     email = serializers.EmailField()
@@ -10,6 +11,18 @@ class NewUser(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = ["username", "email", "password"]
+        extra_kwargs = {
+            "username" : {
+                # 'unique' errors ignore the error_messages dict for a field
+                # so we need to explicitly add the UniqueValidator with our custom message
+                "validators" : [
+                    UniqueValidator(
+                        queryset=models.User.objects.all(),
+                        message="has already been taken"
+                    )
+                ]
+            }
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
