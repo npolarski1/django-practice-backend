@@ -1,4 +1,3 @@
-hurl
 psycopg[binary,pool]
 djangorestframework
 djangorestframework-simplejwt
