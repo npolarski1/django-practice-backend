@@ -134,7 +134,7 @@ def get_profile_by_username(request, username):
 # /profiles/{username}/follow
 # Follow a user
 @api_view(["POST", "DELETE"])
-def follow_unfollow_user_by_username(request):
+def follow_unfollow_user_by_username(request, username):
     # /profiles/{username}/follow
     if request.method == "POST":
         # TODO
