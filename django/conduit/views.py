@@ -125,7 +125,8 @@ def get_profile_by_username(request, username):
     profile_user = User.objects.get(username=username)
 
     # 200 with ProfileResponse on success
-    profile = serializers.Profile(profile_user)
+    # pass request.user as context for checking if they follow profile_user
+    profile = serializers.Profile(profile_user, context={"request_user": request.user})
     return Response(data={"profile": profile.data}, status=status.HTTP_200_OK)
 
     # 404 if profile doesn't exist
@@ -137,14 +138,19 @@ def get_profile_by_username(request, username):
 def follow_unfollow_user_by_username(request, username):
     # /profiles/{username}/follow
     if request.method == "POST":
-        # TODO
-        # get user from username param
-        # add user to following for logged in user
+        profile_user = User.objects.get(username=username)
+
+        request.user.followed_users.add(profile_user)
+
+        # need to pass user as context to add profile_user to user's followed 
+        profile = serializers.Profile(profile_user, context={"request_user": request.user})
+
         # 200 with ProfileResponse on success
+        return Response(data={"profile": profile.data}, status=status.HTTP_200_OK)
+
         # 401 if not logged in
         # 404 if profile doesn't exist
         # 422 for generic error
-        return Response()
     
     # Unfollow a user
     elif request.method == "DELETE":
