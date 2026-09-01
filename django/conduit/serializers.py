@@ -3,6 +3,7 @@ import conduit.models as models
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.password_validation import validate_password
 
 class LoginUser(serializers.Serializer):
     email = serializers.EmailField()
@@ -71,6 +72,8 @@ class UpdateUser(serializers.ModelSerializer):
         # validate at least one user attribute is being updated
         if not any(field in attrs for field in self.fields):
             raise serializers.ValidationError("No user attributes specified to be updated")
+        if password := attrs.get('password'):
+            validate_password(password)
         
         return attrs
 
