@@ -120,14 +120,16 @@ def current_user(request):
 # /profiles/{username}
 # Get a profile
 @api_view(["GET"])
-def get_profile_by_username(request):
+def get_profile_by_username(request, username):
 
-    # TODO
-    # get username param
+    profile_user = User.objects.get(username=username)
+
     # 200 with ProfileResponse on success
+    profile = serializers.Profile(profile_user)
+    return Response(data={"profile": profile.data}, status=status.HTTP_200_OK)
+
     # 404 if profile doesn't exist
     # 422 for generic error
-    return Response()
 
 # /profiles/{username}/follow
 # Follow a user
