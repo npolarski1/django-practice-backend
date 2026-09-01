@@ -80,14 +80,19 @@ class UpdateUser(serializers.ModelSerializer):
 class Profile(serializers.ModelSerializer):
     class Meta:
         model = models.User
-        fields = ["bio, image, username"]
+        fields = ["bio", "image", "username", "following"]
 
     following = serializers.SerializerMethodField("is_following")
 
     # checks if the current user is following the profile
     def is_following(self, obj):
-        # TODO
-        return
+        request = self.context.get('request')
+
+        if request:
+            if request.user.followed_users.filter(username=obj.username).exists():
+                return True
+            
+        return False
 
 class Article(serializers.ModelSerializer):
     class Meta:
