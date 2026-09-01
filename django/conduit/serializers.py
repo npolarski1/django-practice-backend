@@ -4,6 +4,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.models import AnonymousUser
 
 class LoginUser(serializers.Serializer):
     email = serializers.EmailField()
@@ -86,13 +87,18 @@ class Profile(serializers.ModelSerializer):
 
     # checks if the current user is following the profile
     def is_following(self, obj):
-        request = self.context.get('request')
+        request_user = self.context.get('request_user')
 
-        if request:
-            if request.user.followed_users.filter(username=obj.username).exists():
+        if request_user:
+            # user can't be following the profile if they're not logged in
+            if isinstance(request_user, AnonymousUser):
+                return False
+            elif request_user.followed_users.filter(pk=obj.pk).exists():
                 return True
+            else:
+                return False
             
-        return False
+        raise AttributeError("Request user not passed to Profile serializer")
 
 class Article(serializers.ModelSerializer):
     class Meta:
