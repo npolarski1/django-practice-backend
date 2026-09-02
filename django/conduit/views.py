@@ -141,7 +141,12 @@ def get_profile_by_username(request, username):
 @permission_classes([IsAuthenticated])
 def follow_unfollow_user_by_username(request, username):
     # get user from username URL param
-    profile_user = User.objects.get(username=username)
+    try:
+        profile_user = User.objects.get(username=username)
+    # 404 if profile doesn't exist
+    except User.DoesNotExist:
+        return Response(data={"errors": {"profile": ["not found"]}}, 
+                        status=status.HTTP_404_NOT_FOUND)
 
     # /profiles/{username}/follow
     if request.method == "POST":
@@ -152,10 +157,6 @@ def follow_unfollow_user_by_username(request, username):
 
         # 200 with ProfileResponse on success
         return Response(data={"profile": profile.data}, status=status.HTTP_200_OK)
-
-        # 401 if not logged in
-        # 404 if profile doesn't exist
-        # 422 for generic error
     
     # Unfollow a user
     elif request.method == "DELETE":
@@ -165,10 +166,6 @@ def follow_unfollow_user_by_username(request, username):
 
         # return 200 with ProfileResponse on success
         return Response(data={"profile": profile.data}, status=status.HTTP_200_OK)
-
-        #   401 if not logged in
-        #   404 if profile doesn't exist
-        #   422 if already unfollowed
 
 # /articles
 @api_view(["GET", "POST"])
