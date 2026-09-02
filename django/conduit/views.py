@@ -138,6 +138,7 @@ def get_profile_by_username(request, username):
 # /profiles/{username}/follow
 # Follow a user
 @api_view(["POST", "DELETE"])
+@permission_classes([IsAuthenticated])
 def follow_unfollow_user_by_username(request, username):
     # get user from username URL param
     profile_user = User.objects.get(username=username)
