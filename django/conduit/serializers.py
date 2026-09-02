@@ -116,7 +116,7 @@ class Article(serializers.ModelSerializer):
 class NewArticle(serializers.ModelSerializer):
     class Meta:
         model = models.Article
-        fields = ["title, description, body, tagList"]
+        fields = ["title", "description", "body", "tagList"]
         extra_kwargs = {
             "tagList" : {"required": False},
         }
