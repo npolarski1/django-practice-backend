@@ -136,13 +136,14 @@ def get_profile_by_username(request, username):
 # Follow a user
 @api_view(["POST", "DELETE"])
 def follow_unfollow_user_by_username(request, username):
+    # get user from username URL param
+    profile_user = User.objects.get(username=username)
+
     # /profiles/{username}/follow
     if request.method == "POST":
-        profile_user = User.objects.get(username=username)
-
         request.user.followed_users.add(profile_user)
 
-        # need to pass user as context to add profile_user to user's followed 
+        # need to pass user as context to add profile_user to set is_following
         profile = serializers.Profile(profile_user, context={"request_user": request.user})
 
         # 200 with ProfileResponse on success
@@ -154,16 +155,16 @@ def follow_unfollow_user_by_username(request, username):
     
     # Unfollow a user
     elif request.method == "DELETE":
-        # TODO
-        # get user from username param
-        # remove user from following list
-        # save updated current user following list to db
-        # return:
-        #   200 with ProfileResponse on success
+        request.user.followed_users.remove(profile_user)
+
+        profile = serializers.Profile(profile_user, context={"request_user": request.user})
+
+        # return 200 with ProfileResponse on success
+        return Response(data={"profile": profile.data}, status=status.HTTP_200_OK)
+
         #   401 if not logged in
         #   404 if profile doesn't exist
         #   422 if already unfollowed
-        return Response()
 
 # /articles
 @api_view(["GET", "POST"])
